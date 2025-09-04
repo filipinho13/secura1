@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { interventionService, chantierService } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 import { Plus, Clock, CheckCircle, AlertCircle, Camera } from 'lucide-react'

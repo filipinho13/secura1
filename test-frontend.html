@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Frontend</title>
+</head>
+<body>
+    <h1>Test de connexion au frontend</h1>
+    <script>
+        console.log('Test frontend - chargement de la page');
+        
+        // Test de l'API
+        fetch('http://localhost:8000/api/')
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data);
+                document.body.innerHTML += '<p>✅ API Backend accessible: ' + JSON.stringify(data) + '</p>';
+            })
+            .catch(error => {
+                console.error('Erreur API:', error);
+                document.body.innerHTML += '<p>❌ Erreur API: ' + error + '</p>';
+            });
+            
+        // Test du frontend
+        fetch('http://localhost:3001')
+            .then(response => response.text())
+            .then(data => {
+                console.log('Frontend accessible');
+                document.body.innerHTML += '<p>✅ Frontend accessible</p>';
+            })
+            .catch(error => {
+                console.error('Erreur Frontend:', error);
+                document.body.innerHTML += '<p>❌ Erreur Frontend: ' + error + '</p>';
+            });
+    </script>
+</body>
+</html>
