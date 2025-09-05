@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test ERP - Page Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        button {
+            background: #3b82f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover { background: #2563eb; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🛡️ Test ERP Secura Protect</h1>
+        <p class="info">Cette page teste la connectivité de l'ERP</p>
+        
+        <button onclick="testAPI()">Tester l'API Backend</button>
+        <button onclick="testLogin()">Tester la Connexion</button>
+        <button onclick="window.location.href='/'">Aller au Dashboard</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `<p>${message}</p>`;
+            results.appendChild(div);
+        }
+        
+        async function testAPI() {
+            addResult('🔍 Test de l\'API backend...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/');
+                const data = await response.json();
+                addResult('✅ API Backend accessible: ' + JSON.stringify(data), 'success');
+            } catch (error) {
+                addResult('❌ Erreur API: ' + error.message, 'error');
+            }
+        }
+        
+        async function testLogin() {
+            addResult('🔍 Test de connexion admin...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'admin@secura.com',
+                        password: 'admin123'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('✅ Connexion admin réussie: ' + data.user.first_name + ' ' + data.user.last_name, 'success');
+                } else {
+                    addResult('❌ Erreur de connexion: ' + response.status, 'error');
+                }
+            } catch (error) {
+                addResult('❌ Erreur de connexion: ' + error.message, 'error');
+            }
+        }
+        
+        // Test automatique au chargement
+        window.onload = function() {
+            addResult('🚀 Page de test chargée avec succès!', 'success');
+            addResult('📍 URL actuelle: ' + window.location.href, 'info');
+        };
+    </script>
+</body>
+</html>
